@@ -1,0 +1,245 @@
+/* bootstrap-flamenco.css - Versión adaptada para web de temática flamenca */
+/* Cargar DESPUÉS de bootstrap.min.css */
+
+:root {
+  --primary-flamenco: #a0121f;     /* Rojo más oscuro, elegante */
+  --secondary-flamenco: #1f1a17;   /* Negro con tono marrón oscuro */
+  --accent-flamenco: #d4af37;      /* Oro viejo */
+  --text-light: #f9f5f0;           /* Blanco cálido */
+  --gray-flamenco: #3a2a24;        /* Marrón oscuro para fondos */
+  --highlight-flamenco: #800000;   /* Rojo muy oscuro */
+
+  --transition-base: all 0.35s ease-in-out;
+  --shadow-sm: 0 1px 5px rgba(0,0,0,0.3);
+  --shadow: 0 6px 15px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 35px rgba(0,0,0,0.5);
+}
+
+body {
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  background-color: var(--secondary-flamenco);
+  color: var(--text-light);
+  font-size: 1rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Georgia', serif;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--accent-flamenco);
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+.btn {
+  border: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.65rem 1.4rem;
+  border-radius: 0.4rem;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  background: linear-gradient(45deg, #a0121f, #6b0a0d);
+  color: var(--text-light);
+  font-family: 'Georgia', serif;
+}
+
+.btn:hover, .btn:focus {
+  background: linear-gradient(135deg, #d42c3f, #800000);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
+  color: var(--text-light);
+  outline: none;
+  text-shadow: 0 0 5px var(--accent-flamenco);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-detalle {
+  background: linear-gradient(135deg, #800000, #b32028);
+  color: #fff;
+}
+
+.btn-modificar {
+  background: linear-gradient(135deg, #d4af37, #a08019);
+  color: #2b1e00;
+}
+
+.btn-eliminar {
+  background: linear-gradient(135deg, #b10000, #e74c3c);
+  color: #fff;
+}
+
+.btn-detalle:hover,
+.btn-modificar:hover,
+.btn-eliminar:hover {
+  opacity: 0.95;
+}
+
+.card {
+  background-color: var(--gray-flamenco);
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  color: var(--text-light);
+  font-family: 'Georgia', serif;
+}
+
+.card-header {
+  background-color: var(--primary-flamenco);
+  color: var(--text-light);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  font-family: 'Georgia', serif;
+  text-transform: uppercase;
+  box-shadow: inset 0 -4px 10px rgba(0,0,0,0.3);
+}
+
+.card-footer {
+  background-color: transparent;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #c9b77a;
+  font-family: 'Georgia', serif;
+}
+
+.table {
+  background-color: transparent;
+  color: var(--text-light);
+  font-family: 'Georgia', serif;
+  font-weight: 500;
+}
+
+.table thead th {
+  background-color: var(--highlight-flamenco);
+  color: var(--text-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--accent-flamenco);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.7);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(212, 175, 55, 0.15);
+  color: var(--secondary-flamenco);
+  font-weight: 600;
+}
+
+.alert {
+  border: none;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  box-shadow: var(--shadow-sm);
+  border-radius: 0.3rem;
+  letter-spacing: 0.8px;
+}
+
+.alert-danger {
+  background-color: #800000;
+  color: #fff;
+  text-shadow: 0 0 3px #4b0000;
+}
+
+.alert-success {
+  background-color: #2a9d8f;
+  color: #fff;
+  text-shadow: 0 0 3px #14514d;
+}
+
+.navbar {
+  background-color: var(--primary-flamenco);
+  box-shadow: var(--shadow-lg);
+  font-family: 'Georgia', serif;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.navbar-brand, .nav-link {
+  color: var(--text-light) !important;
+  font-family: 'Georgia', serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 0 3px rgba(0,0,0,0.8);
+  transition: color 0.25s ease-in-out;
+}
+
+.nav-link:hover {
+  color: var(--accent-flamenco) !important;
+  text-shadow: 0 0 6px var(--accent-flamenco);
+}
+
+a {
+  color: var(--accent-flamenco);
+  transition: var(--transition-base);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #fff;
+  text-shadow: 0 0 5px var(--accent-flamenco);
+  text-decoration: underline;
+}
+
+/* Botones en tablas */
+.table .btn {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  margin-right: 6px;
+  font-family: 'Georgia', serif;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  border-radius: 0.3rem;
+  background: linear-gradient(45deg, #a0121f, #6b0a0d);
+  color: var(--text-light);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-base);
+}
+
+.table .btn:hover, .table .btn:focus {
+  background: linear-gradient(135deg, #d42c3f, #800000);
+  box-shadow: var(--shadow);
+  color: var(--text-light);
+  transform: translateY(-2px);
+  outline: none;
+  text-shadow: 0 0 5px var(--accent-flamenco);
+}
+
+/* Footer - Adaptado a flamenco */
+footer {
+  background-color: var(--primary-flamenco);
+  color: var(--text-light);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  box-shadow: 0 -6px 12px rgba(0,0,0,0.5);
+}
+
+footer a {
+  color: var(--accent-flamenco);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-shadow: 0 0 5px var(--accent-flamenco);
+}
+
+/* Sombras utilitarias */
+.shadow-sm { box-shadow: var(--shadow-sm) !important; }
+.shadow { box-shadow: var(--shadow) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
+
