@@ -5,6 +5,7 @@ Portal web de eventos musicales centrado en el flamenco, donde los usuarios pued
 ## 🧩 Tecnologías utilizadas
 
 - Java EE / JSP / Servlets
+- Spring Framework (IoC, MVC, Inyección de Dependencias)
 - JDBC y DAOs
 - Apache Tomcat
 - HTML5, CSS3, Bootstrap
