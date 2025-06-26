@@ -194,8 +194,8 @@
 			<div class="col-1"></div>
 			<span class="input-group-btn">
 				<button class="btn btn-info"
-					onclick="window.location.href='${pageContext.request.contextPath}/grupos/alta?grupoId=${detalleGrupo.grupoId}'">
-					<i class="fa fa-plus">Añadir Grupo</i>
+					onclick="window.location.href='${pageContext.request.contextPath}/componentes/alta?grupoId=${detalleGrupo.grupoId}'">
+					<i class="fa fa-plus">Añadir Componente</i>
 				</button>
 			</span>
 		</div>

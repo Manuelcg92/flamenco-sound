@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <!doctype html>
 <html lang="en">
@@ -27,11 +28,9 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<title>Grupos Musicales - Productos</title>
-
+<title>Componentes - Actualizar componente</title>
 
 </head>
-
 
 <body class="fondo">
 
@@ -93,118 +92,92 @@
 
 		</div>
 	</nav>
+
 	<div class="container">
 		<div class="signup-form-container">
 
 			<!-- Espacio de cabecera -->
 			<div class="form-header">
 				<h3 class="registration">
-					<i class="fa fa-user"></i>Productos del grupo
+					<i class="fa fa-pencil"></i>Editar producto
 				</h3>
 			</div>
 
-			<!-- Espacio de enlace de Volver -->
+			<!-- Espacio de enlace de Volver-->
 			<div class="form-row">
 				<div class="col">
-					<a href="${pageContext.request.contextPath}/grupos/lista">Volver</a>
+					<a
+						href="${pageContext.request.contextPath}/productos/lista?grupoId=${grupo.grupoId}">Volver</a>
 				</div>
 			</div>
 
 			<p></p>
 
-			<!-- Espacio para los datos del grupo -->
+			<!-- Espacio para modificar los datos -->
 			<div class="form-row">
-				<div class="col-1"></div>
-				<div class="col-10">
+				<div class="col-3"></div>
+				<div class="col-6">
 					<div class="form-body">
 						<div class="form-group">
 							<div>
-								<form role="form" id="datos-usuario" autocomplete="off"
-									class="credentials">
-									<div class="input-group">Id del grupo:
-										${detallesGrupo.grupoId}</div>
-									<div class="input-group">Nombre del grupo:
-										${detallesGrupo.nombre}</div>
-									<div class="input-group">Año de creación del grupo:
-										${detallesGrupo.creacion}</div>
-									<div class="input-group">Lugar de origen del grupo:
-										${detallesGrupo.origen}</div>
-									<div class="input-group">Género musical del grupo:
-										${detallesGrupo.genero}</div>
+								<form:form role="form" id="login-usuarios" autocomplete="off"
+									class="credentials" method="post"
+									action="${pageContext.request.contextPath}/productos/actualizar"
+									modelAttribute="producto">
+									ID del producto:
+									<div class="input-group" style="margin-top: 10px;">
+										<form:input path="productoId" type="text" readonly="true"
+											cssClass="form-control fontAwesome" />
+									</div>
+									<form:hidden path="productoId" />
+									<p></p>
+									Nombre:
+									<div class="input-group" style="margin-top: 10px;">
+										<form:input path="nombre" type="text"
+											class="form-control fontAwesome" />
+									</div>
+									<form:errors path="nombre" cssClass="text-danger" />
+									<p></p>
+									Descripcion:
+									<div class="input-group" style="margin-top: 10px;">
+										<form:input path="descripcion" type="text"
+											class="form-control fontAwesome" />
+									</div>
+									<form:errors path="descripcion" cssClass="text-danger" />
+									<p></p>
+									
+									Precio:
+									<div class="input-group" style="margin-top: 10px;">
+										<form:input path="precio" type="number"
+											class="form-control fontAwesome" />
+									</div>
+									<form:errors path="precio" cssClass="text-danger" />
+									<p></p>
+									ID del grupo:
+									<div class="input-group" style="margin-top: 10px;">
+										<form:input path="grupo.grupoId" type="text" readonly="true"
+											cssClass="form-control fontAwesome" />
+									</div>
+									<form:hidden path="grupo.grupoId" />
+									<p></p>
 
-								</form>
+									<span class="input-group-btn">
+										<button type="submit" class="btn btn-info">Guardar</button>
+									</span>
+									<a class="btn btn-info"
+										href="${pageContext.request.contextPath}/productos/lista?grupoId=${grupo.grupoId}">
+										Cancelar </a>
+
+								</form:form>
 							</div>
-
 						</div>
 					</div>
-
 				</div>
 
-				<div class="col-1"></div>
 			</div>
 
-			<p>
-				<br>
-			</p>
-
-			<!-- Espacio para la lista de productos -->
-			<c:if test="${not empty detallesGrupo.productos}">
-
-				<div class="release">
-					<span class="welcome">LISTADO DE PRODUCTOS DEL GRUPO MUSICAL</span>
-					<br> <br>
-
-					<table class="table table-bordered table-striped"
-						style="width: 100%; font-size: small; text-align: all-center">
-						<thead class="tableHeaderAll">
-							<tr>
-								<th>Nombre</th>
-								<th>Descripcion</th>
-								<th>Precio</th>
-								<c:if test="${sessionScope.admin}">
-									<th>Acciones</th>
-								</c:if>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="producto" items="${detallesGrupo.productos}">
-								<tr>
-									<td>${producto.nombre}</td>
-									<td>${producto.descripcion}</td>
-									<td>${producto.precio}</td>
-									<c:if test="${sessionScope.admin}">
-										<td><a
-											href="${pageContext.request.contextPath}/productos/modificar?productoId=${producto.productoId}"
-											class="btn btn-info btn-sm btn-modificar"> <i
-												class="fa fa-pencil"></i>
-										</a> <a
-											href="${pageContext.request.contextPath}/productos/eliminar?productoId=${producto.productoId}"
-											class="btn btn-info btn-sm btn-eliminar"
-											onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
-												<i class="fa fa-trash"></i>
-										</a></td>
-									</c:if>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-
-			</c:if>
-
-			<!-- Espacio para el botón de Añadir producto -->
-			<c:if test="${sessionScope.admin}">
-				<div class="form-row">
-					<div class="col-1"></div>
-					<span class="input-group-btn">
-						<button class="btn btn-info"
-							onclick="window.location.href='${pageContext.request.contextPath}/productos/alta?grupoId=${detallesGrupo.grupoId}'">
-							<i class="fa fa-plus">Añadir Producto</i>
-						</button>
-					</span>
-				</div>
-			</c:if>
 		</div>
 	</div>
+
 </body>
 </html>

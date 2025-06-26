@@ -69,7 +69,7 @@ public class ControladorProducto {
 
 			modelo.addAttribute("producto", new Producto(grupoId));
 
-			return "producto/nuevoProducto";
+			return "productos/nuevoProducto";
 
 		} catch (Exception e) {
 
@@ -95,12 +95,12 @@ public class ControladorProducto {
 		try {
 
 			if (bindingResult.hasErrors()) {
-				return "producto/nuevoProducto";
+				return "productos/nuevoProducto";
 			}
 
 			productoDAO.altaProducto(producto);
 
-			return "redirect:/grupos/detalle?grupoId=" + producto.getGrupo().getGrupoId();
+			return "redirect:/productos/lista?grupoId=" + producto.getGrupo().getGrupoId();
 
 		} catch (Exception e) {
 
@@ -127,7 +127,7 @@ public class ControladorProducto {
 
 			modelo.addAttribute("producto", productoSeleccionado);
 
-			return "producto/editarProducto";
+			return "productos/editarProducto";
 
 		} catch (Exception e) {
 
@@ -150,12 +150,12 @@ public class ControladorProducto {
 			BindingResult bindingResult, Model modelo) {
 
 		if (bindingResult.hasErrors()) {
-			return "producto/editarProducto";
+			return "productos/editarProducto";
 		}
 
 		productoDAO.actualizarProducto(producto);
 
-		return "redirect:/grupos/detalle?grupoId=" + producto.getGrupo().getGrupoId();
+		return "redirect:/productos/lista?grupoId=" + producto.getGrupo().getGrupoId();
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class ControladorProducto {
 
 		productoDAO.eliminaProducto(productoId);
 
-		return "redirect:/grupos/detalle?grupoId=" + grupoId;
+		return "redirect:/productos/lista?grupoId=" + grupoId;
 
 	}
 
