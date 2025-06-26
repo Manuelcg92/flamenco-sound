@@ -99,7 +99,7 @@
 			<!-- Espacio de cabecera -->
 			<div class="form-header">
 				<h3 class="registration">
-					<i class="fa fa-user"></i>Productos del grupo
+					<i class="fa fa-shopping-bag"></i>Productos del grupo
 				</h3>
 			</div>
 
@@ -151,7 +151,7 @@
 			<c:if test="${not empty detallesGrupo.productos}">
 
 				<div class="release">
-					<span class="welcome">LISTADO DE PRODUCTOS DEL GRUPO MUSICAL</span>
+					<span class="welcome">LISTADO DE PRODUCTOS: ${detallesGrupo.nombre}</span>
 					<br> <br>
 
 					<table class="table table-bordered table-striped"
