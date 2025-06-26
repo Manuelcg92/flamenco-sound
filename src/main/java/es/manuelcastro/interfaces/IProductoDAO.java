@@ -1,6 +1,8 @@
 package es.manuelcastro.interfaces;
 
 
+import java.util.List;
+
 import es.manuelcastro.entidades.Producto;
 
 public interface IProductoDAO {
@@ -34,10 +36,13 @@ public interface IProductoDAO {
 	void eliminaProducto(int productoId);
 
 	/**
-	 * Metodo que devuelve el ID del grupo asociado a un producto
+	 * Metodo que devuelve el @Override
+	ID del grupo asociado a un producto
 	 * 
 	 * @param productoId - Valor a asignar
 	 */
-	int getProductoId(int productoId);
+	int getGrupoId(int productoId);
+
+	List<Producto> getProductos();
 
 }

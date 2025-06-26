@@ -160,7 +160,7 @@
 										<form:select path="genero" cssClass="form-control fontAwesome">
 											<form:option value="Flamenco" label="Flamenco" />
 											<form:option value="Flamenco Pop" label="Flamenco Pop" />
-											<form:option value="Frlamenco Fusion" label="Frlamenco Fusion" />
+											<form:option value="Flamenco Fusion" label="Flamenco Fusion" />
 											<form:option value="Contemporaneo" label="Contemporaneo" />
 											<form:option value="Rumbero" label="Rumbero" />
 										</form:select>

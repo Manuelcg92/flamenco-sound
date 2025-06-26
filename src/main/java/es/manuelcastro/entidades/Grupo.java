@@ -65,10 +65,10 @@ public class Grupo {
 	// Lista de componentes que forman parte del grupo.
 	// Relacion uno-a-muchos con la entidad Componente.
 	
-	@OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Componente> componentes;
 	
-	@OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Producto> productos;
 
 

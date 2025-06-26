@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <!doctype html>
 <html lang="en">
@@ -28,11 +27,14 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<title>Grupos Musicales - Actualizar grupo musical</title>
+<title>Grupos Musicales - Productos</title>
+
 
 </head>
 
+
 <body class="fondo">
+
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand"
@@ -91,18 +93,17 @@
 
 		</div>
 	</nav>
-
 	<div class="container">
 		<div class="signup-form-container">
 
 			<!-- Espacio de cabecera -->
 			<div class="form-header">
 				<h3 class="registration">
-					<i class="fa fa-microphone"></i>Editar grupo
+					<i class="fa fa-user"></i>Productos del grupo
 				</h3>
 			</div>
 
-			<!-- Espacio de enlace de Volver-->
+			<!-- Espacio de enlace de Volver -->
 			<div class="form-row">
 				<div class="col">
 					<a href="${pageContext.request.contextPath}/grupos/lista">Volver</a>
@@ -111,74 +112,99 @@
 
 			<p></p>
 
-			<!-- Espacio para modificar los datos -->
+			<!-- Espacio para los datos del grupo -->
 			<div class="form-row">
-				<div class="col-3"></div>
-				<div class="col-6">
+				<div class="col-1"></div>
+				<div class="col-10">
 					<div class="form-body">
 						<div class="form-group">
 							<div>
-								<form:form role="form" id="login-usuarios" autocomplete="off"
-									cssClass="credentials" method="post" action="actualizar"
-									modelAttribute="grupo">
-								    ID del grupo:
-								    <div class="input-group" style="margin-top: 10px;">
-										<form:input path="grupoId" readonly="true"
-											cssClass="form-control fontAwesome" />
-									</div>
-									<p></p>
-									Nombre del grupo:
-								    <div class="input-group" style="margin-top: 10px;">
-										<form:input path="nombre" cssClass="form-control fontAwesome"
-											placeholder="Nombre del grupo" />
-									</div>
-									<form:errors path="nombre" cssClass="text-danger" />
-									<p></p>
-									Año de creación:
-								    <div class="input-group" style="margin-top: 10px;">
-										<form:input path="creacion" type="number"
-											cssClass="form-control fontAwesome"
-											placeholder="Año de creación" />
-									</div>
-									<form:errors path="creacion" cssClass="text-danger" />
-									<p></p>
-									Origen:
-								    <div class="input-group" style="margin-top: 10px;">
-										<form:input path="origen" type="text"
-											cssClass="form-control fontAwesome"
-											placeholder="Origen" />
-									</div>
-									<form:errors path="origen" cssClass="text-danger" />
-									<p></p>
-									Género musical:
-								    <div class="input-group" style="margin-top: 10px;">
-										<form:select path="genero" cssClass="form-control fontAwesome">
-											<form:option value="Flamenco" label="Flamenco" />
-											<form:option value="Flamenco Pop" label="Flamenco Pop" />
-											<form:option value="Flamenco Fusion" label="Flamenco Fusion" />
-											<form:option value="Contemporaneo" label="Contemporaneo" />
-											<form:option value="Rumbero" label="Rumbero" />
-										</form:select>
-									</div>
-									<p></p>
+								<form role="form" id="datos-usuario" autocomplete="off"
+									class="credentials">
+									<div class="input-group">Id del grupo:
+										${detallesGrupo.grupoId}</div>
+									<div class="input-group">Nombre del grupo:
+										${detallesGrupo.nombre}</div>
+									<div class="input-group">Año de creación del grupo:
+										${detallesGrupo.creacion}</div>
+									<div class="input-group">Lugar de origen del grupo:
+										${detallesGrupo.origen}</div>
+									<div class="input-group">Género musical del grupo:
+										${detallesGrupo.genero}</div>
 
-									<span class="input-group-btn">
-										<button type="submit" class="btn btn-info">Guardar</button>
-									</span>
-									<span class="input-group-btn">
-										<button type="reset" class="btn btn-info"
-											onclick="window.location.href='lista'">Cancelar</button>
-									</span>
-								</form:form>
+								</form>
 							</div>
+
 						</div>
 					</div>
+
 				</div>
 
+				<div class="col-1"></div>
 			</div>
 
+			<p>
+				<br>
+			</p>
+
+			<!-- Espacio para la lista de productos -->
+			<c:if test="${not empty detallesGrupo.productos}">
+
+				<div class="release">
+					<span class="welcome">LISTADO DE PRODUCTOS DEL GRUPO MUSICAL</span>
+					<br> <br>
+
+					<table class="table table-bordered table-striped"
+						style="width: 100%; font-size: small; text-align: all-center">
+						<thead class="tableHeaderAll">
+							<tr>
+								<th>Nombre</th>
+								<th>Descripcion</th>
+								<th>Precio</th>
+								<c:if test="${sessionScope.admin}">
+									<th>Acciones</th>
+								</c:if>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="producto" items="${detallesGrupo.productos}">
+								<tr>
+									<td>${producto.nombre}</td>
+									<td>${producto.descripcion}</td>
+									<td>${producto.precio}</td>
+									<c:if test="${sessionScope.admin}">
+										<td><a
+											href="${pageContext.request.contextPath}/productos/modificar?productoId=${producto.productoId}"
+											class="btn btn-info btn-sm btn-modificar"> <i
+												class="fa fa-pencil"></i>
+										</a> <a
+											href="${pageContext.request.contextPath}/productos/eliminar?productoId=${producto.productoId}"
+											class="btn btn-info btn-sm btn-eliminar"
+											onclick="return confirm('¿Estás seguro de que deseas eliminar este componente?')">
+												<i class="fa fa-trash"></i>
+										</a></td>
+									</c:if>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+
+			</c:if>
+
+			<!-- Espacio para el botón de Añadir producto -->
+			<c:if test="${sessionScope.admin}">
+				<div class="form-row">
+					<div class="col-1"></div>
+					<span class="input-group-btn">
+						<button class="btn btn-info"
+							onclick="window.location.href='${pageContext.request.contextPath}/productos/alta?grupoId=${productos.grupoId}'">
+							<i class="fa fa-plus">Añadir Producto</i>
+						</button>
+					</span>
+				</div>
+			</c:if>
 		</div>
 	</div>
-
 </body>
 </html>

@@ -83,6 +83,12 @@ public class GrupoDAO implements IGrupoDAO {
 				throw new ResourceNotFoundException(Constantes.ERROR_CARGAR);
 
 			}
+			
+			// Forzar carga de componentes
+			grupo.getComponentes().size();
+			
+			// Forzar carga de productos
+			grupo.getProductos().size();
 
 			return grupo;
 

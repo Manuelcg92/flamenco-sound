@@ -1,8 +1,11 @@
 package es.manuelcastro.daos;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,217 +17,230 @@ import es.manuelcastro.excepciones.ResourceNotFoundException;
 import es.manuelcastro.interfaces.IProductoDAO;
 import es.manuelcastro.utils.Constantes;
 
-
 @Transactional
 @Repository
-public class ProductoDAO implements IProductoDAO{
+public class ProductoDAO implements IProductoDAO {
 
+	@Autowired
+	private SessionFactory sessionFactory;
 
-		// Fabrica de sesiones de Hibernate inyectada automaticamente por Spring
-		@Autowired
-		private SessionFactory sessionFactory;
+	@Override
+	public List<Producto> getProductos() {
 
-		/**
-		 * Metodo que recupera un componente a partir de su ID.
-		 * 
-		 * @param componenteId - ID del componente a recuperar
-		 * @return - El componente encontrado
-		 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
-		 *                                   especificado
-		 * @throws DDBBException             si ocurre un error relacionado con la BBDD
-		 *                                   durante la operacion
-		 * @throws RuntimeException          si ocurre un error inesperado no controlado
-		 *                                   especificamente
-		 */
-		@Override
-		public Producto getProducto(int productoId) {
+		try {
 
-			try {
+			Session miSession = sessionFactory.getCurrentSession();
 
-				Session miSesion = sessionFactory.getCurrentSession();
+			Query<Producto> miQuery = miSession.createQuery("from Producto", Producto.class);
 
-				Producto elProducto = miSesion.get(Producto.class, productoId);
+			return miQuery.getResultList();
 
-				if (elProducto == null) {
+		} catch (Exception e) {
 
-					throw new ResourceNotFoundException(Constantes.ERROR_CARGAR);
+			throw new DDBBException();
 
-				}
+		}
+	}
+	
+	/**
+	 * Metodo que recupera un componente a partir de su ID.
+	 * 
+	 * @param componenteId - ID del componente a recuperar
+	 * @return - El componente encontrado
+	 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
+	 *                                   especificado
+	 * @throws DDBBException             si ocurre un error relacionado con la BBDD
+	 *                                   durante la operacion
+	 * @throws RuntimeException          si ocurre un error inesperado no controlado
+	 *                                   especificamente
+	 */
+	@Override
+	public Producto getProducto(int productoId) {
 
-				return elProducto;
+		try {
 
-			} catch (HibernateException e) {
+			Session miSesion = sessionFactory.getCurrentSession();
 
-				throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
+			Producto elProducto = miSesion.get(Producto.class, productoId);
 
-			} catch (ResourceNotFoundException e) {
+			if (elProducto == null) {
 
-				throw e;
-
-			} catch (Exception e) {
-
-				throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
+				throw new ResourceNotFoundException(Constantes.ERROR_CARGAR);
 
 			}
 
+			return elProducto;
+
+		} catch (HibernateException e) {
+
+			throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
+
+		} catch (ResourceNotFoundException e) {
+
+			throw e;
+
+		} catch (Exception e) {
+
+			throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
+
 		}
 
-		/**
-		 * Metodo que da de alta un nuevo componente en la base de datos.
-		 * 
-		 * @param componente - El componente a persistir
-		 * @throws DDBBException si ocurre un error relacionado con la BBDD durante la
-		 *                       operacion
-		 */
-		@Override
-		public void altaProducto(Producto producto) {
+	}
 
-			try {
+	/**
+	 * Metodo que da de alta un nuevo componente en la base de datos.
+	 * 
+	 * @param componente - El componente a persistir
+	 * @throws DDBBException si ocurre un error relacionado con la BBDD durante la
+	 *                       operacion
+	 */
+	@Override
+	public void altaProducto(Producto producto) {
 
-				Session miSesion = sessionFactory.getCurrentSession();
+		try {
 
-				miSesion.save(producto);
+			Session miSesion = sessionFactory.getCurrentSession();
 
-			} catch (Exception e) {
+			miSesion.save(producto);
 
-				throw new DDBBException();
+		} catch (Exception e) {
+
+			throw new DDBBException();
+
+		}
+	}
+
+	/**
+	 * Metodo que actualiza los datos de un componente existente.
+	 * 
+	 * @param componente - Componente con los datos actualizados
+	 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
+	 *                                   especificado
+	 * @throws DDBBException             si ocurre un error relacionado con la BBDD
+	 *                                   durante la operacion
+	 * @throws RuntimeException          si ocurre un error inesperado no controlado
+	 *                                   especificamente
+	 */
+	public void actualizarProducto(Producto producto) {
+
+		try {
+
+			Session miSesion = sessionFactory.getCurrentSession();
+
+			Producto productoExiste = miSesion.get(Producto.class, producto.getProductoId());
+
+			if (productoExiste == null) {
+
+				throw new ResourceNotFoundException(Constantes.ERROR_ACTUALIZAR);
 
 			}
+
+			miSesion.merge(producto);
+
+		} catch (HibernateException e) {
+
+			throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
+
+		} catch (ResourceNotFoundException e) {
+
+			throw e;
+
+		} catch (Exception e) {
+
+			throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
+
 		}
+	}
 
-		/**
-		 * Metodo que actualiza los datos de un componente existente.
-		 * 
-		 * @param componente - Componente con los datos actualizados
-		 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
-		 *                                   especificado
-		 * @throws DDBBException             si ocurre un error relacionado con la BBDD
-		 *                                   durante la operacion
-		 * @throws RuntimeException          si ocurre un error inesperado no controlado
-		 *                                   especificamente
-		 */
-		public void actualizarProducto(Producto producto) {
+	/**
+	 * Metodo que elimina un componente de la base de datos a partir de su ID.
+	 * Tambien lo elimina de su grupo asociado si lo tiene.
+	 * 
+	 * @param componenteId - ID del componente a eliminar
+	 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
+	 *                                   especificado
+	 * @throws DDBBException             si ocurre un error relacionado con la BBDD
+	 *                                   durante la operacion
+	 * @throws RuntimeException          si ocurre un error inesperado no controlado
+	 *                                   especificamente
+	 */
+	public void eliminaProducto(int productoId) {
 
-			try {
+		try {
+			Session miSesion = sessionFactory.getCurrentSession();
 
-				Session miSesion = sessionFactory.getCurrentSession();
+			Producto productoExiste = miSesion.get(Producto.class, productoId);
 
-				Producto productoExiste = miSesion.get(Producto.class, producto.getProductoId());
+			if (productoExiste == null) {
 
-				if (productoExiste == null) {
-
-					throw new ResourceNotFoundException(Constantes.ERROR_ACTUALIZAR);
-
-				}
-
-				miSesion.merge(producto);
-
-			} catch (HibernateException e) {
-
-				throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
-
-			} catch (ResourceNotFoundException e) {
-
-				throw e;
-
-			} catch (Exception e) {
-
-				throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
-
+				throw new ResourceNotFoundException(Constantes.ERROR_ELIMINAR);
 			}
-		}
 
-		/**
-		 * Metodo que elimina un componente de la base de datos a partir de su ID.
-		 * Tambien lo elimina de su grupo asociado si lo tiene.
-		 * 
-		 * @param componenteId - ID del componente a eliminar
-		 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
-		 *                                   especificado
-		 * @throws DDBBException             si ocurre un error relacionado con la BBDD
-		 *                                   durante la operacion
-		 * @throws RuntimeException          si ocurre un error inesperado no controlado
-		 *                                   especificamente
-		 */
-		public void eliminaProducto(int productoId) {
+			Grupo grupo = productoExiste.getGrupo();
 
-			try {
-				Session miSesion = sessionFactory.getCurrentSession();
+			if (grupo != null && grupo.getComponentes() != null) {
 
-				Producto productoExiste = miSesion.get(Producto.class, productoId);
-
-				if (productoExiste == null) {
-
-					throw new ResourceNotFoundException(Constantes.ERROR_ELIMINAR);
-				}
-
-				Grupo grupo = productoExiste.getGrupo();
-
-				if (grupo != null && grupo.getComponentes() != null) {
-
-					grupo.getProductos().remove(productoExiste);
-				}
-
-				miSesion.delete(productoExiste);
-
-			} catch (HibernateException e) {
-
-				throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
-
-			} catch (ResourceNotFoundException e) {
-
-				throw e;
-
-			} catch (Exception e) {
-
-				throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
-
+				grupo.getProductos().remove(productoExiste);
 			}
+
+			miSesion.delete(productoExiste);
+
+		} catch (HibernateException e) {
+
+			throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
+
+		} catch (ResourceNotFoundException e) {
+
+			throw e;
+
+		} catch (Exception e) {
+
+			throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
+
 		}
+	}
 
-		/**
-		 * Metodo que obtiene el ID del grupo al que pertenece un componente.
-		 * 
-		 * @param componenteId - ID del componente
-		 * @return - ID del grupo asociado
-		 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
-		 *                                   especificado
-		 * @throws DDBBException             si ocurre un error relacionado con la BBDD
-		 *                                   durante la operacion
-		 * @throws RuntimeException          si ocurre un error inesperado no controlado
-		 *                                   especificamente
-		 */
-		public int getProductoId(int productoId) {
+	/**
+	 * Metodo que obtiene el ID del grupo al que pertenece un componente.
+	 * 
+	 * @param componenteId - ID del componente
+	 * @return - ID del grupo asociado
+	 * @throws ResourceNotFoundException si no se encuentra el usuario con el ID
+	 *                                   especificado
+	 * @throws DDBBException             si ocurre un error relacionado con la BBDD
+	 *                                   durante la operacion
+	 * @throws RuntimeException          si ocurre un error inesperado no controlado
+	 *                                   especificamente
+	 */
+	public int getGrupoId(int productoId) {
 
-			try {
-				Session miSesion = sessionFactory.getCurrentSession();
+		try {
+			Session miSesion = sessionFactory.getCurrentSession();
 
-				Producto producto = miSesion.get(Producto.class, productoId);
+			Producto producto = miSesion.get(Producto.class, productoId);
 
-				if (producto == null) {
-					throw new ResourceNotFoundException("No se encontró el componente con ID: " + productoId);
-				}
-
-				if (producto.getGrupo() == null) {
-					throw new ResourceNotFoundException(
-							"El producto con ID " + productoId + " no tiene grupo asociado");
-				}
-
-				return producto.getGrupo().getGrupoId();
-
-			} catch (HibernateException e) {
-
-				throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
-
-			} catch (ResourceNotFoundException e) {
-
-				throw e;
-
-			} catch (Exception e) {
-
-				throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
-
+			if (producto == null) {
+				throw new ResourceNotFoundException("No se encontró el componente con ID: " + productoId);
 			}
-		}
 
+			if (producto.getGrupo() == null) {
+				throw new ResourceNotFoundException("El producto con ID " + productoId + " no tiene grupo asociado");
+			}
+
+			return producto.getGrupo().getGrupoId();
+
+		} catch (HibernateException e) {
+
+			throw new DDBBException(Constantes.ERROR_CONEXION + ": " + e.getMessage());
+
+		} catch (ResourceNotFoundException e) {
+
+			throw e;
+
+		} catch (Exception e) {
+
+			throw new RuntimeException(Constantes.ERROR_INESPERADO + e.getMessage(), e);
+
+		}
+	}
 }

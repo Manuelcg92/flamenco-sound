@@ -93,122 +93,112 @@
 
 		</div>
 	</nav>
-	<div class="container">
-		<div class="signup-form-container">
 
-			<!-- Espacio de cabecera -->
-			<div class="form-header">
-				<h3 class="registration">
-					<i class="fa fa-user"></i>Detalles del grupo
-				</h3>
-			</div>
+	<!-- Espacio de cabecera -->
+	<div class="form-header">
+		<h3 class="registration">
+			<i class="fa fa-user"></i>Detalles del grupo
+		</h3>
+	</div>
 
-			<!-- Espacio de enlace de Volver -->
-			<div class="form-row">
-				<div class="col">
-					<a href="${pageContext.request.contextPath}/grupos/lista">Volver</a>
-				</div>
-			</div>
+	<!-- Espacio de enlace de Volver -->
+	<div class="form-row">
+		<div class="col">
+			<a href="${pageContext.request.contextPath}/grupos/lista">Volver</a>
+		</div>
+	</div>
 
-			<p></p>
+	<p></p>
 
-			<!-- Espacio para los datos del grupo -->
-			<div class="form-row">
-				<div class="col-1"></div>
-				<div class="col-10">
-					<div class="form-body">
-						<div class="form-group">
-							<div>
-								<form role="form" id="datos-usuario" autocomplete="off"
-									class="credentials">
-									<div class="input-group">Id del grupo:
-										${detalleGrupo.grupoId}</div>
-									<div class="input-group">Nombre del grupo:
-										${detalleGrupo.nombre}</div>
-									<div class="input-group">Año de creación del grupo:
-										${detalleGrupo.creacion}</div>
-									<div class="input-group">Lugar de origen del grupo:
-										${detalleGrupo.origen}</div>
-									<div class="input-group">Género musical del grupo:
-										${detalleGrupo.genero}</div>
+	<!-- Espacio para los datos del grupo -->
+	<div class="form-row">
+		<div class="col-1"></div>
+		<div class="col-10">
+			<div class="form-body">
+				<div class="form-group">
+					<div>
+						<form role="form" id="datos-usuario" autocomplete="off"
+							class="credentials">
+							<div class="input-group">Id del grupo:
+								${detalleGrupo.grupoId}</div>
+							<div class="input-group">Nombre del grupo:
+								${detalleGrupo.nombre}</div>
+							<div class="input-group">Año de creación del grupo:
+								${detalleGrupo.creacion}</div>
+							<div class="input-group">Lugar de origen del grupo:
+								${detalleGrupo.origen}</div>
+							<div class="input-group">Género musical del grupo:
+								${detalleGrupo.genero}</div>
 
-								</form>
-							</div>
-
-						</div>
+						</form>
 					</div>
 
 				</div>
-
-				<div class="col-1"></div>
 			</div>
-
-			<p>
-				<br>
-			</p>
-
-			<!-- Espacio para la lista de componentes -->
-			<c:if test="${not empty detalleGrupo.componentes}">
-
-				<div class="release">
-					<span class="welcome">LISTADO DE COMPONENTES DEL GRUPO
-						MUSICAL</span> <br> <br>
-
-					<table class="table table-bordered table-striped"
-						style="width: 100%; font-size: small; text-align: all-center">
-						<thead class="tableHeaderAll">
-							<tr>
-								<th>Nombre del componente</th>
-								<th>Instrumento</th>
-								<c:if test="${sessionScope.admin}">
-									<th>Acciones</th>
-								</c:if>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="componente" items="${detalleGrupo.componentes}">
-								<tr>
-									<td>${componente.nombre}</td>
-									<td>${componente.instrumento}</td>
-									<c:if test="${sessionScope.admin}">
-										<td><a
-											href="${pageContext.request.contextPath}/componentes/modificar?componenteId=${componente.componenteId}"
-											class="btn btn-info btn-sm btn-modificar"> <i
-												class="fa fa-pencil"></i>
-										</a> <a
-											href="${pageContext.request.contextPath}/componentes/eliminar?componenteId=${componente.componenteId}"
-											class="btn btn-info btn-sm btn-eliminar"
-											onclick="return confirm('¿Estás seguro de que deseas eliminar este componente?')">
-												<i class="fa fa-trash"></i>
-										</a></td>
-									</c:if>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-
-			</c:if>
-
-			<!-- Espacio para el botón de Añadir grupo -->
-			<c:if test="${sessionScope.admin}">
-				<div class="form-row">
-					<div class="col-1"></div>
-					<span class="input-group-btn">
-						<button class="btn btn-info"
-							onclick="window.location.href='${pageContext.request.contextPath}/componentes/alta?grupoId=${detalleGrupo.grupoId}'">
-							<i class="fa fa-plus">Añadir Componente</i>
-						</button>
-					</span>
-				</div>
-			</c:if>
-
-
 
 		</div>
 
+		<div class="col-1"></div>
 	</div>
 
-</body>
+	<p>
+		<br>
+	</p>
 
+	<!-- Espacio para la lista de componentes -->
+	<c:if test="${not empty detalleGrupo.componentes}">
+
+		<div class="release">
+			<span class="welcome">LISTADO DE COMPONENTES DEL GRUPO MUSICAL</span>
+			<br> <br>
+
+			<table class="table table-bordered table-striped"
+				style="width: 100%; font-size: small; text-align: all-center">
+				<thead class="tableHeaderAll">
+					<tr>
+						<th>Nombre del componente</th>
+						<th>Instrumento</th>
+						<c:if test="${sessionScope.admin}">
+							<th>Acciones</th>
+						</c:if>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="componente" items="${detalleGrupo.componentes}">
+						<tr>
+							<td>${componente.nombre}</td>
+							<td>${componente.instrumento}</td>
+							<c:if test="${sessionScope.admin}">
+								<td><a
+									href="${pageContext.request.contextPath}/componentes/modificar?componenteId=${componente.componenteId}"
+									class="btn btn-info btn-sm btn-modificar"> <i
+										class="fa fa-pencil"></i>
+								</a> <a
+									href="${pageContext.request.contextPath}/componentes/eliminar?componenteId=${componente.componenteId}"
+									class="btn btn-info btn-sm btn-eliminar"
+									onclick="return confirm('¿Estás seguro de que deseas eliminar este componente?')">
+										<i class="fa fa-trash"></i>
+								</a></td>
+							</c:if>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+
+	</c:if>
+
+	<!-- Espacio para el botón de Añadir grupo -->
+	<c:if test="${sessionScope.admin}">
+		<div class="form-row">
+			<div class="col-1"></div>
+			<span class="input-group-btn">
+				<button class="btn btn-info"
+					onclick="window.location.href='${pageContext.request.contextPath}/grupos/alta?grupoId=${detalleGrupo.grupoId}'">
+					<i class="fa fa-plus">Añadir Grupo</i>
+				</button>
+			</span>
+		</div>
+	</c:if>
+</body>
 </html>

@@ -12,28 +12,49 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import es.manuelcastro.entidades.Componente;
-import es.manuelcastro.interfaces.IComponenteDAO;
+import es.manuelcastro.entidades.Grupo;
+import es.manuelcastro.entidades.Producto;
+import es.manuelcastro.interfaces.IGrupoDAO;
+import es.manuelcastro.interfaces.IProductoDAO;
 import es.manuelcastro.utils.Constantes;
 
-/**
- * Clase ControladorComponente.
- * 
- * Controlador encargado de gestionar las operaciones relacionadas con los
- * componentes, incluyendo creacion, modificacion, eliminacion y visualizacion.
- * 
- * @author Manuel Castro
- * @version 1.1
- * @since 2025-06-16
- */
-
 @Controller
-@RequestMapping("/componentes")
-public class ControladorComponente {
-
+@RequestMapping("/productos")
+public class ControladorProducto {
+	
 	@Autowired
-	private IComponenteDAO componenteDAO;
+	private IProductoDAO productoDAO;
+	
+	@Autowired
+	private IGrupoDAO grupoDAO;
+	
+	/**
+	 * Metodo que guarda y muestra una lista con todos los grupos musicales de la
+	 * BBDD.
+	 * 
+	 * @param modelo - Establece el atributo al modelo
+	 * @return - Envia al jsp correspondiente
+	 */
+	@GetMapping("/lista")
+	public String detalleGrupo(@RequestParam("grupoId") int grupoId, Model modelo) {
 
+		try {
+
+			Grupo grupo = grupoDAO.getGrupo(grupoId);
+
+			modelo.addAttribute("detallesGrupo", grupo);
+
+			return "productos/productos";
+
+		} catch (Exception e) {
+
+			modelo.addAttribute(Constantes.ERROR, Constantes.ERROR_CARGAR);
+
+			return Constantes.ERROR;
+		}
+
+	}
+	
 	/**
 	 * Muestra el formulario para insertar un nuevo componente.
 	 * 
@@ -42,13 +63,13 @@ public class ControladorComponente {
 	 * @return - La vista "nuevoComponente" o "error" si ocurre un problema
 	 */
 	@RequestMapping("/alta")
-	public String altaComponente(@RequestParam("grupoId") int grupoId, Model modelo) {
+	public String altaProducto(@RequestParam("grupoId") int grupoId, Model modelo) {
 
 		try {
 
-			modelo.addAttribute("componente", new Componente(grupoId));
+			modelo.addAttribute("producto", new Producto(grupoId));
 
-			return "componentes/nuevoComponente";
+			return "producto/nuevoProducto";
 
 		} catch (Exception e) {
 
@@ -68,18 +89,18 @@ public class ControladorComponente {
 	 * @return - Redireccion al detalle del grupo o "error" si ocurre un problema
 	 */
 	@PostMapping("/insertar")
-	public String insertaComponente(@Valid @ModelAttribute("componente") Componente componente,
+	public String insertaProducto(@Valid @ModelAttribute("producto") Producto producto,
 			BindingResult bindingResult, Model modelo) {
 
 		try {
 
 			if (bindingResult.hasErrors()) {
-				return "componentes/nuevoComponente";
+				return "producto/nuevoProducto";
 			}
 
-			componenteDAO.altaComponente(componente);
+			productoDAO.altaProducto(producto);
 
-			return "redirect:/grupos/detalle?grupoId=" + componente.getGrupo().getGrupoId();
+			return "redirect:/grupos/detalle?grupoId=" + producto.getGrupo().getGrupoId();
 
 		} catch (Exception e) {
 
@@ -97,16 +118,16 @@ public class ControladorComponente {
 	 * @return - La vista "editarComponente" o "error" si ocurre un problema
 	 */
 	@GetMapping("/modificar")
-	public String modificarComponente(@RequestParam("componenteId") int componenteId, Model modelo) {
+	public String modificarProducto(@RequestParam("productoId") int productoId, Model modelo) {
 
 
 		try {
 
-			Componente componenteSeleccionado = componenteDAO.getComponente(componenteId);
+			Producto productoSeleccionado = productoDAO.getProducto(productoId);
 
-			modelo.addAttribute("componente", componenteSeleccionado);
+			modelo.addAttribute("producto", productoSeleccionado);
 
-			return "componentes/editarComponente";
+			return "producto/editarProducto";
 
 		} catch (Exception e) {
 
@@ -125,16 +146,16 @@ public class ControladorComponente {
 	 * @return - Redireccion al jsp correspondiente
 	 */
 	@PostMapping("/actualizar")
-	public String actualizarComponente(@Valid @ModelAttribute("componente") Componente componente,
+	public String actualizarProducto(@Valid @ModelAttribute("producto") Producto producto,
 			BindingResult bindingResult, Model modelo) {
 
 		if (bindingResult.hasErrors()) {
-			return "componentes/editarComponente";
+			return "producto/editarProducto";
 		}
 
-		componenteDAO.actualizarComponente(componente);
+		productoDAO.actualizarProducto(producto);
 
-		return "redirect:/grupos/detalle?grupoId=" + componente.getGrupo().getGrupoId();
+		return "redirect:/grupos/detalle?grupoId=" + producto.getGrupo().getGrupoId();
 	}
 
 	/**
@@ -145,14 +166,15 @@ public class ControladorComponente {
 	 * @return - Redireccion al jsp correspondiente
 	 */
 	@GetMapping("/eliminar")
-	public String eliminarComponente(@RequestParam("componenteId") int componenteId, Model modelo) {
+	public String eliminarProducto(@RequestParam("productoId") int productoId, Model modelo) {
 
-		int grupoId = componenteDAO.getGrupoId(componenteId);
+		int grupoId = productoDAO.getGrupoId(productoId);
 
-		componenteDAO.eliminaComponente(componenteId);
+		productoDAO.eliminaProducto(productoId);
 
 		return "redirect:/grupos/detalle?grupoId=" + grupoId;
 
 	}
 
 }
+

@@ -91,87 +91,76 @@
 
 		</div>
 	</nav>
+	<p>
+		<br>
+	</p>
 
-	<div class="container">
-		<div class="signup-form-container">
-		
-			<p>
-				<br>
-			</p>
+	<!-- Espacio para la lista de Grupos musicales -->
+	<div class="release">
+		<span class="welcome">LISTADO DE GRUPOS MUSICALES</span> <br> <br>
 
-			<!-- Espacio para la lista de Grupos musicales -->
-			<div class="release">
-				<span class="welcome">LISTADO DE GRUPOS MUSICALES</span> <br> <br>
+		<table class="table table-bordered table-striped"
+			style="width: 100%; font-size: small;">
+			<thead class="tableHeaderAll">
+				<tr>
+					<th>Id</th>
+					<th>Nombre del grupo</th>
+					<th>Año de creación</th>
+					<th>Origen</th>
+					<th>Género musical</th>
+					<th>Acciones</th>
+					<!-- SIEMPRE se muestra la cabecera -->
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="grupo" items="${grupos}">
+					<tr class="tableHeaderUser">
+						<td>${grupo.grupoId}</td>
+						<td>${grupo.nombre}</td>
+						<td>${grupo.creacion}</td>
+						<td>${grupo.origen}</td>
+						<td>${grupo.genero}</td>
+						<td><a
+							href="${pageContext.request.contextPath}/grupos/detalle?grupoId=${grupo.grupoId}"
+							class="btn btn-info btn-sm btn-detalle"> <i
+								class="fa fa-search"></i>
+						</a> <a
+							href="${pageContext.request.contextPath}/productos/lista?grupoId=${grupo.grupoId}"
+							class="btn btn-info btn-sm btn-detalle"> <i
+								class="fa fa-shopping-bag"></i>
+						</a> <c:if test="${sessionScope.admin}">
+					&nbsp;|&nbsp;
+					<a href="modificar?grupoId=${grupo.grupoId}"
+									class="btn btn-info btn-sm btn-modificar"> <i
+									class="fa fa-pencil"></i>
+								</a>
+								<a href="eliminar?grupoId=${grupo.grupoId}"
+									class="btn btn-info btn-sm btn-eliminar"
+									onclick="return confirm('¿Estás seguro de que deseas eliminar este grupo?')">
+									<i class="fa fa-trash"></i>
+								</a>
+							</c:if></td>
+					</tr>
+				</c:forEach>
+			</tbody>
 
-				<table class="table table-bordered table-striped"
-					style="width: 100%; font-size: small;">
-					<thead class="tableHeaderAll">
-						<tr>
-							<th>Id</th>
-							<th>Nombre del grupo</th>
-							<th>Año de creación</th>
-							<th>Origen</th>
-							<th>Género musical</th>
-							<th>Acciones</th>
-							<!-- SIEMPRE se muestra la cabecera -->
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="grupoTemp" items="${grupos}">
-							<c:url var="linkDetalle" value="detalle">
-								<c:param name="grupoId" value="${grupoTemp.grupoId}" />
-							</c:url>
-							<c:url var="linkActualizar" value="modificar">
-								<c:param name="grupoId" value="${grupoTemp.grupoId}" />
-							</c:url>
-							<c:url var="linkEliminar" value="eliminar">
-								<c:param name="grupoId" value="${grupoTemp.grupoId}" />
-							</c:url>
-
-							<tr class="tableHeaderUser">
-								<td>${grupoTemp.grupoId}</td>
-								<td>${grupoTemp.nombre}</td>
-								<td>${grupoTemp.creacion}</td>
-								<td>${grupoTemp.origen}</td>
-								<td>${grupoTemp.genero}</td>
-								<td><a href="${linkDetalle}"
-									class="btn btn-info btn-sm btn-detalle"><i
-										class="fa fa-search"></i></a> <c:if test="${sessionScope.admin}">
-									&nbsp;|&nbsp;
-									<a href="${linkActualizar}"
-											class="btn btn-info btn-sm btn-modificar"> <i
-											class="fa fa-pencil"></i>
-										</a>
-										<a href="${linkEliminar}"
-											class="btn btn-info btn-sm btn-eliminar"
-											onclick="return confirm('¿Estás seguro de que deseas eliminar este grupo?')">
-											<i class="fa fa-trash"></i>
-										</a>
-									</c:if></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
-
-
-			<p></p>
-
-			<!-- Espacio para el botón de Añadir grupo -->
-			<c:if test="${sessionScope.admin}">
-				<div class="form-row">
-					<div class="col-1"></div>
-					<span class="input-group-btn">
-						<button class="btn btn-info" onclick="window.location.href='alta'">
-							<i class="fa fa-plus"> Añadir Grupo</i>
-						</button>
-					</span>
-				</div>
-			</c:if>
-
-
-		</div>
+		</table>
 	</div>
+
+
+	<p></p>
+
+	<!-- Espacio para el botón de Añadir grupo -->
+	<c:if test="${sessionScope.admin}">
+		<div class="form-row">
+			<div class="col-1"></div>
+			<span class="input-group-btn">
+				<button class="btn btn-info" onclick="window.location.href='alta'">
+					<i class="fa fa-plus"> Añadir Grupo</i>
+				</button>
+			</span>
+		</div>
+	</c:if>
 
 </body>
 
